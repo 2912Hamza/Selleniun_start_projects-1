@@ -18,7 +18,7 @@ public class Selenium_calculator {
 	 @Before
 	  public void setup() {
 		 
-			  System.setProperty("webdriver.gecko.driver","C:\\geckodriver-v0.34.0-win32\\geckodriver.exe");
+			  System.setProperty("webdriver.gecko.driver","C:\\geckodriver\\geckodriver.exe");
 		      browser = new FirefoxDriver();
 		  	  browser.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
 			  String url="https://testpages.eviltester.com/styled/apps/calculator.html";
@@ -26,26 +26,52 @@ public class Selenium_calculator {
 		
 	  }
 	 
-	 @Test
-		public void Tests1() {
-	    	
-			
-				browser.findElement(By.id("button01")).click();
-				browser.findElement(By.id("buttonplus")).click();
-				browser.findElement(By.id("button02")).click();
-				try {
-					  Thread.sleep(1000);
-					} catch (InterruptedException e) {
-					  Thread.currentThread().interrupt();
-					}
+	 private void enterTriangleSides(String a, String b, String c) {
+	        browser.findElement(By.id("side1")).sendKeys(a);
+	        browser.findElement(By.id("side2")).sendKeys(b);
+	        browser.findElement(By.id("side3")).sendKeys(c);
+	    }
+
+	    private void verifySamePage() {
+	        String currentPage = browser.getCurrentUrl();
+	        browser.findElement(By.id("identify-triangle-action")).click();
+	        assertEquals(currentPage, browser.getCurrentUrl());
+	    }
+
+	    @Test
+	    public void testEquilateralTriangle() {
+	        enterTriangleSides("10.0", "10.0", "10.0");
+	        verifySamePage();
+	    }
+
+	    @Test
+	    public void testInvalidTriangle() {
+	        enterTriangleSides("4.0", "1.0", "1.0");
+	        verifySamePage();
+	    }
+
+	    @Test
+	    public void testIsoscelesTriangle() {
+	        enterTriangleSides("6.0", "6.0", "9.0");
+	        verifySamePage();
+	    }
+
+	    @Test
+	    public void testScaleneTriangle() {
+	        enterTriangleSides("9.0", "7.0", "8.0");
+	        verifySamePage();
+	    }
+
+	    @Test
+	    public void testAnotherInvalidTriangle() {
+	        enterTriangleSides("3.0", "3.0", "10.0");
+	        verifySamePage();
+	    }
+
+	    @Test
+	    public void testAnotherEquilateralTriangle() {
+	        enterTriangleSides("12.0", "12.0", "12.0");
+	        verifySamePage();
+	    }		
 				
-				browser.findElement(By.id("buttonequals")).click();
-				System.out.println("hello");
-				
-				String result= browser.findElement(By.id("calculated-display")).getAttribute("value").toString();
-				System.out.println(result);	
-				String Expected= "3";
-				assertEquals(Expected,result);
-				
-				
-}}
+}

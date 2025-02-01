@@ -19,7 +19,7 @@ public class SelleninumTesting_2 {
 	 @Before
 	  public void setup() {
 		 
-			  System.setProperty("webdriver.gecko.driver","C:\\geckodriver-v0.34.0-win32\\geckodriver.exe");
+			  System.setProperty("webdriver.gecko.driver","C:\\geckodriver\\geckodriver.exe");
 		      browser = new FirefoxDriver();
 		  	  browser.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
 			
@@ -27,22 +27,63 @@ public class SelleninumTesting_2 {
 		
 	  }
 		
-	@Test
-	public void Tests1() {
-   	
-		
-			WebElement textBox = browser.findElement(By.id("firstname"));
-			textBox.sendKeys("chaya");
-			textBox = browser.findElement(By.id("surname"));
-			textBox.sendKeys("Zilberstein");
-			textBox = browser.findElement(By.id("age"));
-			textBox.sendKeys("21");
-			Select drpCountry = new Select(browser.findElement(By.name("country")));
-			drpCountry.selectByVisibleText("Israel");
-			String currentPage=browser.getCurrentUrl();
-			browser.findElement(By.cssSelector("input[type='submit']")).click();
-			String newPage = browser.getCurrentUrl();
-			assertNotEquals(currentPage, newPage);
-   }
+	    @Test
+	    public void testCase_1() {
+	        validateInput("Xy12*");
+	    }
+
+	    @Test
+	    public void testCase_2() {
+	        validateInput("AB12&CD");
+	    }
+
+	    @Test
+	    public void testCase_3() {
+	        validateInput("QWer567*");
+	    }
+
+	    @Test
+	    public void testCase_4() {
+	        validateInput("MNO*XYZ");
+	    }
+
+	    @Test
+	    public void testCase_5() {
+	        validateInput("JKL%D45");
+	    }
+
+	    @Test
+	    public void testCase_6() {
+	        validateInput("ZXCV8^");
+	    }
+
+	    @Test
+	    public void testCase_7() {
+	        validateInput("$B9#RT");
+	    }
+
+	    @Test
+	    public void testCase_8() {
+	        validateInput("LMN34");
+	    }
+
+	    @Test
+	    public void testCase_9() {
+	        validateInput("Cx87*");
+	    }
+
+	    @Test
+	    public void testCase_10() {
+	        validateInput("FGHIJ");
+	    }
+
+	    private void validateInput(String input) {
+	        WebElement textBox = browser.findElement(By.name("characters"));
+	        textBox.sendKeys(input);
+	        String currentPage = browser.getCurrentUrl();
+	        browser.findElement(By.name("validate")).click();
+	        String newPage = browser.getCurrentUrl();
+	        assertNotEquals("כתובת ה-URL אמורה להשתנות אחרי לחיצה על validate", currentPage, newPage);
+	    }
 
 }
